@@ -1,0 +1,100 @@
+﻿namespace Archiwum
+{
+    partial class FormHelp
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormHelp));
+            this.btn = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.tb1 = new System.Windows.Forms.TextBox();
+            this.SuspendLayout();
+            // 
+            // btn
+            // 
+            this.btn.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.btn.Location = new System.Drawing.Point(226, 400);
+            this.btn.Name = "btn";
+            this.btn.Size = new System.Drawing.Size(120, 40);
+            this.btn.TabIndex = 0;
+            this.btn.Text = "OK";
+            this.btn.UseVisualStyleBackColor = true;
+            this.btn.Click += new System.EventHandler(this.Btn_Click);
+            // 
+            // label1
+            // 
+            this.label1.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.label1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label1.Font = new System.Drawing.Font("Segoe Print", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label1.Location = new System.Drawing.Point(0, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(572, 41);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Pomoc";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // tb1
+            // 
+            this.tb1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.tb1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tb1.Location = new System.Drawing.Point(0, 41);
+            this.tb1.Multiline = true;
+            this.tb1.Name = "tb1";
+            this.tb1.ReadOnly = true;
+            this.tb1.Size = new System.Drawing.Size(572, 351);
+            this.tb1.TabIndex = 2;
+            this.tb1.Text = resources.GetString("tb1.Text");
+            // 
+            // FormHelp
+            // 
+            this.AcceptButton = this.btn;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.btn;
+            this.ClientSize = new System.Drawing.Size(572, 450);
+            this.Controls.Add(this.tb1);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.btn);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Name = "FormHelp";
+            this.Text = "FormHelp";
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
+        }
+
+        #endregion
+
+        private System.Windows.Forms.Button btn;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox tb1;
+    }
+}
