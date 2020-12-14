@@ -51,12 +51,10 @@
             this.delAll = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
-            this.logo = new System.Windows.Forms.PictureBox();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.grid)).BeginInit();
             this.Menu.SuspendLayout();
             this.statusStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.logo)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -99,6 +97,9 @@
             // 
             this.grid.AllowUserToAddRows = false;
             this.grid.AllowUserToDeleteRows = false;
+            this.grid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.grid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.grid.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
@@ -111,7 +112,6 @@
             this.grid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.grid.ContextMenuStrip = this.Menu;
-            this.grid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grid.Location = new System.Drawing.Point(0, 24);
             this.grid.MultiSelect = false;
             this.grid.Name = "grid";
@@ -126,7 +126,7 @@
             this.grid.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.grid.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
             this.grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.grid.Size = new System.Drawing.Size(800, 426);
+            this.grid.Size = new System.Drawing.Size(800, 401);
             this.grid.TabIndex = 1;
             this.grid.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.Grid_CellDoubleClick);
             // 
@@ -252,23 +252,11 @@
             this.lblStatus.Text = "[  ]";
             this.lblStatus.MouseHover += new System.EventHandler(this.LblStatus_MouseHover);
             // 
-            // logo
-            // 
-            this.logo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.logo.BackColor = System.Drawing.Color.White;
-            this.logo.Location = new System.Drawing.Point(759, 428);
-            this.logo.Name = "logo";
-            this.logo.Size = new System.Drawing.Size(41, 22);
-            this.logo.TabIndex = 3;
-            this.logo.TabStop = false;
-            this.logo.Click += new System.EventHandler(this.Logo_Click);
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.logo);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.grid);
             this.Controls.Add(this.menuStrip1);
@@ -285,7 +273,6 @@
             this.Menu.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.logo)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -306,7 +293,6 @@
         private System.Windows.Forms.ToolStripMenuItem usuńToolStripMenuItem;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel lblStatus;
-        private System.Windows.Forms.PictureBox logo;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem odświeżToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem eksportujDoExcelToolStripMenuItem;

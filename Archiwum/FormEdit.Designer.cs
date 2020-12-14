@@ -205,9 +205,9 @@
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.label4.Location = new System.Drawing.Point(18, 180);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(113, 32);
+            this.label4.Size = new System.Drawing.Size(112, 16);
             this.label4.TabIndex = 41;
-            this.label4.Text = "Data początkowa\r\n(pole opcjonalne)";
+            this.label4.Text = "Data początkowa\r\n";
             // 
             // label3
             // 

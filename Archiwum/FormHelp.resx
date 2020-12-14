@@ -118,7 +118,11 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="tb1.Text" xml:space="preserve">
-    <value>Skróty klawiszowe: 
+    <value>
+PRZED EKSPORTOWANIEM TABELI DO EXCELA NALEŻY ODŚWIEŻYĆ PROGRAM, W PRZECIWNYM 
+WYPADKU TABELA MOŻE PRZENIEŚĆ SIĘ NIE PEŁNA!
+
+Skróty klawiszowe: 
 Ctrl+H - Pomoc, 
 Ctrl+1 - Archiwum,
 Ctrl+2 - Na makulaturę, 
@@ -134,8 +138,8 @@ Znaki polskie są niemożliwe do wpisania w okno wyszukiwania, ponieważ okno to
 klawisza Alt, znaki polskie można wprowadzić jedynie poprzez wklejenie ich do okna wyszukiwania.
 
 Program otwiera bazę danych podczas swojego startu, kiedy jednak z jakiegoś powodu jej nie otworzy i wyskoczy
-błąd mówiący o braku bazy danych, należy go zrestartować i wszystko powinno działać.
-Jeśli program wciąż nie będzie mógł połączyć się z bazą danych należyu wejść w Ten komputer -&gt; dysk na którym
+błąd mówiący o braku bazy danych, należy spróbować ponownie, w przypadku wielokrotnego błędu należy go zrestartować i wszystko powinno działać.
+Jeśli program wciąż nie będzie mógł połączyć się z bazą danych należy wejść w Ten komputer -&gt; dysk na którym
 został zainstalowany program MariaDB(prawdopodobnie C) -&gt; Program Files -&gt; MariaDB xx.x -&gt; bin i otworzyć 
 plik .exe mysqld, następnie zrestartować program i problem powinien zniknąć.</value>
   </data>

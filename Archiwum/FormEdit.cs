@@ -30,23 +30,23 @@ namespace Archiwum
             try
             {
                 sql = @"Update archiwum.archiwum SET
-                lp = @lp , symbol_wykaz_akt = @sWa , tytul = @tyt , dat_pocz = @dat_pocz , dat_konc = @dat_konc , lat_waz = @lat_waz , ltomow = @ltomow , uwagi = @uwagi , dodat_info = @dodat WHERE `index`= @id";
+                lp = @lp , symbol_wykaz_akt = @sWa , tytul = @tyt , dat_pocz = @dat_pocz , dat_konc = @dat_konc , lat_waz = @lat_waz , ltomow = @ltomow , uwagi = @uwagi , dodat_info = @dodat, dskrajne = @dskrajne WHERE `index`= @id";
 
                 if (tbSDate.Text.Replace(" ", "").Equals("--"))
                 {
                     sql = @"Update archiwum.archiwum SET
-                    lp = @lp , symbol_wykaz_akt = @sWa , tytul = @tyt , dat_pocz = NULL , dat_konc = @dat_konc, lat_waz = @lat_waz , ltomow = @ltomow , uwagi = @uwagi , dodat_info = @dodat WHERE `index` = @id";
+                    lp = @lp , symbol_wykaz_akt = @sWa , tytul = @tyt , dat_pocz = NULL , dat_konc = @dat_konc, lat_waz = @lat_waz , ltomow = @ltomow , uwagi = @uwagi , dodat_info = @dodat, dskrajne = @dskrajne WHERE `index` = @id";
                 }
                 if (tbEDate.Text.Replace(" ", "").Equals("--"))
                 {
                     sql = @"Update archiwum.archiwum SET
-                    lp = @lp , symbol_wykaz_akt = @sWa , tytul = @tyt , dat_pocz = NULL , dat_konc = NULL, lat_waz = NULL , ltomow = @ltomow , uwagi = @uwagi , dodat_info = @dodat WHERE `index` = @id";
+                    lp = @lp , symbol_wykaz_akt = @sWa , tytul = @tyt , dat_pocz = NULL , dat_konc = NULL, lat_waz = NULL , ltomow = @ltomow , uwagi = @uwagi , dodat_info = @dodat, dskrajne = NULL WHERE `index` = @id";
                 }
                 if (tbSDate.Text.Replace(" ", "").Equals("--") && tbEDate.Text.Replace(" ", "").Equals("--"))
                 {
                     sql = @"Update archiwum.archiwum SET
                     lp = @lp , symbol_wykaz_akt = @sWa , tytul = @tyt , dat_pocz = NULL , dat_konc = NULL,
-                    lat_waz = @lat_waz , ltomow = @ltomow , uwagi = @uwagi , dodat_info = @dodat WHERE `index` = @id";
+                    lat_waz = @lat_waz , ltomow = @ltomow , uwagi = @uwagi , dodat_info, dskrajne = NULL = @dodat WHERE `index` = @id";
                 }
 
                 using (MySqlCommand cmd = new MySqlCommand(sql, GlobalData.connection))
@@ -58,6 +58,24 @@ namespace Archiwum
                     cmd.Parameters.Add("@dat_konc", MySqlDbType.Date).Value = tbEDate.Text;
                     cmd.Parameters.Add("@ltomow", MySqlDbType.Int32).Value = numlT.Value;
                     cmd.Parameters.Add("@dodat", MySqlDbType.VarChar, 50).Value = tbD.Text;
+
+                    if (!(tbSDate.Text.Replace(" ", "").Equals("--") && tbEDate.Text.Replace(" ", "").Equals("--")))
+                    {
+                        if (tbSDate.Text.Replace(" ", "").Equals("--"))
+                        {
+                            cmd.Parameters.Add("@dskrajne", MySqlDbType.VarChar, 50).Value = tbEDate.Text;
+                        }
+                        else if (tbEDate.Text.Replace(" ", "").Equals("--"))
+                        {
+                            cmd.Parameters.Add("@dskrajne", MySqlDbType.VarChar, 50).Value = tbSDate.Text;
+                        }
+                        else
+                        {
+                            cmd.Parameters.Add("@dskrajne", MySqlDbType.VarChar, 50).Value = tbSDate.Text + " - " + tbEDate.Text;
+
+                        }
+                    }
+
                     if (tbU.Text.Replace(" ","").Equals("B-"))
                     {
                         cmd.Parameters.Add("@lat_waz", MySqlDbType.Int32).Value = 0;

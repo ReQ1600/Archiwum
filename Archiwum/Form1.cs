@@ -6,6 +6,7 @@ using System.Configuration;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,6 +21,9 @@ namespace Archiwum
         public FormMain()
         {
             InitializeComponent();
+
+            Directory.CreateDirectory(@"bin\backups");
+
             try
             {
                 string path = ConfigurationManager.AppSettings["path"];
@@ -32,6 +36,12 @@ namespace Archiwum
 
             }
 
+            SwConn();
+
+        }
+
+        private void SwConn()
+        {
             string cs = ConfigurationManager.AppSettings["cs"];
             try
             {
@@ -42,10 +52,12 @@ namespace Archiwum
             }
             catch (Exception exc)
             {
-                MessageBox.Show(exc.Message, "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                DialogResult result = MessageBox.Show(exc.Message, "Błąd połączenia z serwerem", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error);
+                if (result == DialogResult.Cancel) return;
+                else SwConn();
             }
 
-            lblStatus.Text = "";
+            lblStatus.Text = "połączono z bazą danych";
         }
 
         private void FormMain_Load(object sender, EventArgs e)
@@ -56,7 +68,7 @@ namespace Archiwum
         private void RefreshGrid(string condition)
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append(@"SELECT `index` AS id, lp, symbol_wykaz_akt, tytul, dat_pocz, dat_konc, ltomow, uwagi, dodat_info FROM archiwum.archiwum" + " ");
+            sb.Append(@"SELECT `index` AS id, lp, symbol_wykaz_akt, tytul, dat_pocz, dat_konc, ltomow, uwagi, dodat_info, dskrajne FROM archiwum.archiwum" + " ");
             sb.Append(condition);
             MySqlDataAdapter adapter = new MySqlDataAdapter();
             adapter.SelectCommand = new MySqlCommand(sb.ToString(), GlobalData.connection);
@@ -109,6 +121,7 @@ namespace Archiwum
             grid.Columns["uwagi"].HeaderText = "Uwagi";
             grid.Columns["dodat_info"].HeaderText = "Dodatkowe informacje";
             grid.Columns["id"].Visible = false;
+            grid.Columns["dskrajne"].Visible = false;
 
         }
 
@@ -146,20 +159,22 @@ namespace Archiwum
             tbSearch.Text = "";
             if (naMakulature == false || naMakulature == null)
             {
+                eksportujDoExcelToolStripMenuItem.Visible = true;
                 delAll.Visible = false;
                 delAllDiv.Visible = false;
+                if (naMakulature == null)
+                {
+                    eksportujDoExcelToolStripMenuItem.Visible = false;
+                }
             }
             else
             {
+                eksportujDoExcelToolStripMenuItem.Visible = true;
                 delAll.Visible = true;
                 delAllDiv.Visible = true;
             }
         }
 
-        private void Logo_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("Program oraz baza danych zostały stworzona przeze mnie czyli Mateusza Drogowskiego","Info",MessageBoxButtons.OK,MessageBoxIcon.Information);
-        }
 
         private void EdytujToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -197,8 +212,11 @@ namespace Archiwum
         {
             if (grid.SelectedRows.Count == 0) return;
 
-            DialogResult result = MessageBox.Show("Czy napewno chcesz usunąć zaznaczone zapis?", "Pytanie", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult result = MessageBox.Show("Czy napewno chcesz usunąć ZAZNACZONY zapis?", "Pytanie", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (result != DialogResult.Yes) return;
+
+
+
             string sql = "DELETE FROM archiwum.archiwum WHERE `index` = @id";
 
             int selecedIndex = grid.SelectedRows[0].Index;
@@ -209,6 +227,7 @@ namespace Archiwum
                 delete.Parameters.Add("@id", MySqlDbType.Int32).Value = id;
                 delete.ExecuteNonQuery();
             }
+            backup();
             grid.Rows.RemoveAt(selecedIndex);
         }
 
@@ -244,41 +263,149 @@ namespace Archiwum
                 {
 
                     case true:
-                        for (int i = 2; i < grid.Columns.Count + 1; i++)
-                        {
-                            xcel.Cells[1, i] = grid.Columns[i - 1].HeaderText;
-                        }
+                        
+                        xcel.Cells[10, 1] = "symbol z wykazu akt";
+                        xcel.Cells[10, 2] = "tytuł teczki";
+                        xcel.Cells[10, 3] = "daty skrajne";
+                        xcel.Cells[10, 4] = "liczba tomów";
+                        xcel.Cells[10, 5] = "uwagi";
 
-                        for (int i = 0; i < grid.Rows.Count; i++)
+                        int howManyTimes = grid.Rows.Count / 26;
+                        if (howManyTimes == 0) howManyTimes++;
+                        if (grid.Rows.Count % 26 != 0) howManyTimes++;
+
+                        xcel.Range["A1", "E" + (grid.Rows.Count + howManyTimes * 10 + 1).ToString()].Cells.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
+
+                        xcel.Range["A5", "A5"].Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeTop].Weight = Microsoft.Office.Interop.Excel.XlBorderWeight.xlThin;
+                        xcel.Range["A5", "A5"].Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeTop].LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlDot;
+
+                        xcel.Range[$"B6", $"C6"].Merge();
+                        xcel.Cells[6, 2] = "Spis dokumentacji niearchiwalnej (aktowej)";
+
+                        xcel.Range[$"B7", $"C7"].Merge();
+                        xcel.Cells[7, 2] = "przeznaczonej na makulaturę lub zniszczenie";
+
+                        xcel.Range[$"B6", $"C7"].Font.Bold = true; ;
+
+                        //upiększanie
+                        int borA = 26;
+                        for (int i = 10; i < grid.Rows.Count + 1 + howManyTimes * 10; i++)
                         {
-                            for (int j = 0; j < grid.Columns.Count; j++)
+                            xcel.Range[$"A{i}", $"A{i}"].BorderAround2(Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous, Microsoft.Office.Interop.Excel.XlBorderWeight.xlThin);
+                            xcel.Range[$"B{i}", $"B{i}"].BorderAround2(Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous, Microsoft.Office.Interop.Excel.XlBorderWeight.xlThin);
+                            xcel.Range[$"C{i}", $"C{i}"].BorderAround2(Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous, Microsoft.Office.Interop.Excel.XlBorderWeight.xlThin);
+                            xcel.Range[$"D{i}", $"D{i}"].BorderAround2(Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous, Microsoft.Office.Interop.Excel.XlBorderWeight.xlThin);
+                            xcel.Range[$"E{i}", $"E{i}"].BorderAround2(Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous, Microsoft.Office.Interop.Excel.XlBorderWeight.xlThin);
+                            if (i == borA + 10)
                             {
-                                xcel.Cells[i + 2, j + 1] = grid.Rows[i].Cells[j].Value.ToString();
+                                i += 10;
+                                borA += 37;
                             }
                         }
+
+                        //wypełnainie
+                        borA = 26;
+                        int x = 11;
+                        for (int i = 0; i < grid.Rows.Count; i++)
+                        {
+                            xcel.Cells[x, 1] = grid.Rows[i].Cells["symbol_wykaz_akt"].Value.ToString();
+                            xcel.Cells[x, 2] = grid.Rows[i].Cells["tytul"].Value.ToString();
+                            xcel.Cells[x, 3] = grid.Rows[i].Cells["dskrajne"].Value.ToString();
+                            xcel.Cells[x, 4] = grid.Rows[i].Cells["ltomow"].Value.ToString();
+                            xcel.Cells[x, 5] = grid.Rows[i].Cells["uwagi"].Value.ToString();
+                            if (x == borA + 10)
+                            {
+                                x += 11;
+                                borA += 37;
+
+                                //POTĘŻNY nagłówek
+                                xcel.Range[$"B{x - 5}", $"C{x - 5}"].Merge();
+                                xcel.Cells[x - 5, 2] = "Spis dokumentacji niearchiwalnej (aktowej)";
+
+                                xcel.Range[$"B{x - 4}", $"C{x - 4}"].Merge();
+                                xcel.Cells[x - 4, 2] = "przeznaczonej na makulaturę lub zniszczenie";
+
+                                xcel.Range[$"B{x - 5}", $"C{x - 4}"].Font.Bold = true;
+                                xcel.Range[$"B{x - 5}", $"C{x - 4}"].Cells.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
+
+
+                                //podpis jest jako range bo oryginalnie miał byćna 2 komórkach ale był za duży i nie chce mi się zmieniać
+                                xcel.Range[$"A{x - 6}", $"A{x - 6}"].Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeTop].Weight = Microsoft.Office.Interop.Excel.XlBorderWeight.xlThin;
+                                xcel.Range[$"A{x - 6}", $"A{x - 6}"].Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeTop].LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlDot;
+
+                                //nagłówki
+                                xcel.Cells[x - 1, 1] = "symbol z wykazu akt";
+                                xcel.Cells[x - 1, 2] = "tytuł teczki";
+                                xcel.Cells[x - 1, 3] = "daty skrajne";
+                                xcel.Cells[x - 1, 4] = "liczba tomów";
+                                xcel.Cells[x - 1, 5] = "uwagi";
+
+                                xcel.Range[$"A{x - 1}",$"A{x - 1}"].BorderAround2(Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous, Microsoft.Office.Interop.Excel.XlBorderWeight.xlThin);
+                                xcel.Range[$"B{x - 1}",$"B{x - 1}"].BorderAround2(Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous, Microsoft.Office.Interop.Excel.XlBorderWeight.xlThin);
+                                xcel.Range[$"C{x - 1}",$"C{x - 1}"].BorderAround2(Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous, Microsoft.Office.Interop.Excel.XlBorderWeight.xlThin);
+                                xcel.Range[$"D{x - 1}",$"D{x - 1}"].BorderAround2(Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous, Microsoft.Office.Interop.Excel.XlBorderWeight.xlThin);
+                                xcel.Range[$"E{x - 1}",$"E{x - 1}"].BorderAround2(Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous, Microsoft.Office.Interop.Excel.XlBorderWeight.xlThin);
+                                
+                            }
+                            else
+                            {
+                                x++;
+                            }
+                        }
+
+                        //zostawiam to tu na wszelki wypadek
+                        //xcel.Cells[x - 1, 1] = "";
+                        //xcel.Cells[x - 1, 2] = "";
+                        //xcel.Cells[x - 1, 3] = "";
+                        //xcel.Cells[x - 1, 4] = "";
+                        //xcel.Cells[x - 1, 5] = "";
+
+                        
+                        //xcel.Range[$"A{x - 6}", $"B{x - 6}"].Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeTop].Color = Microsoft.Office.Interop.Excel.XlRgbColor.rgbWhite;
+
+                        //xcel.Range[$"B{x - 5}", $"C{x - 5}"].UnMerge();
+                        //xcel.Cells[x - 5, 2] = "";
+
+                        //xcel.Range[$"B{x - 4}", $"C{x - 4}"].UnMerge();
+                        //xcel.Cells[x - 4, 2] = "";
+
                         xcel.Columns.AutoFit();
                         xcel.Visible = true;
                         break;
 
 
                     case false:
-                        for (int i = 1; i < grid.Columns.Count + 1; i++)
+                        for (int i = 2; i < grid.Columns.Count; i++)
                         {
                             xcel.Cells[1, i] = grid.Columns[i - 1].HeaderText;
                         }
 
-                        for (int i = 0; i < grid.Rows.Count; i++)
+                        for (int i = 0; i < grid.Rows.Count - 1; i++)
                         {
-                            for (int j = 0; j < grid.Columns.Count; j++)
+                            for (int j = 1; j < grid.Columns.Count; j++)
                             {
                                 xcel.Cells[i + 2, j + 1] = grid.Rows[i].Cells[j].Value.ToString();
+
                             }
+
+                        }
+                        for (int i = 1; i < grid.Rows.Count + 1; i++)
+                        {
+                            xcel.Range[$"A{i}", $"A{i}"].BorderAround2(Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous, Microsoft.Office.Interop.Excel.XlBorderWeight.xlThin);
+                            xcel.Range[$"B{i}", $"B{i}"].BorderAround2(Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous, Microsoft.Office.Interop.Excel.XlBorderWeight.xlThin);
+                            xcel.Range[$"C{i}", $"C{i}"].BorderAround2(Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous, Microsoft.Office.Interop.Excel.XlBorderWeight.xlThin);
+                            xcel.Range[$"D{i}", $"D{i}"].BorderAround2(Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous, Microsoft.Office.Interop.Excel.XlBorderWeight.xlThin);
+                            xcel.Range[$"E{i}", $"E{i}"].BorderAround2(Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous, Microsoft.Office.Interop.Excel.XlBorderWeight.xlThin);
+                            xcel.Range[$"F{i}", $"F{i}"].BorderAround2(Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous, Microsoft.Office.Interop.Excel.XlBorderWeight.xlThin);
+                            xcel.Range[$"G{i}", $"G{i}"].BorderAround2(Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous, Microsoft.Office.Interop.Excel.XlBorderWeight.xlThin);
+                            xcel.Range[$"H{i}", $"H{i}"].BorderAround2(Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous, Microsoft.Office.Interop.Excel.XlBorderWeight.xlThin);
+                            xcel.Range[$"I{i}", $"I{i}"].BorderAround2(Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous, Microsoft.Office.Interop.Excel.XlBorderWeight.xlThin);
                         }
                         xcel.Columns.AutoFit();
                         xcel.Visible = true;
                         break;
                     default:
-                        MessageBox.Show("Nwm co się stało ale nie powinno się to stać");
+                        MessageBox.Show("uh oh");
                         break;
                 }
             }
@@ -315,7 +442,33 @@ namespace Archiwum
             {
                 cmd.ExecuteNonQuery();
             }
+
+            backup();
+
+
             RefreshGrid("WHERE ADDDATE(dat_konc, INTERVAL lat_waz YEAR) < CURRENT_DATE");
+            MessageBox.Show("wszystkie pozycje zostały pomyślnie usunięte");
+        }
+
+        private void backup()
+        {
+            try
+            {
+                //fajny backup btw
+                string date = DateTime.Now.ToString().Replace(":", "").Replace(" ", "").Replace("-", "");
+                string path = $@"bin\backups\bu{date}.txt";
+
+                grid.MultiSelect = true;
+                grid.SelectAll();
+                string txt = grid.GetClipboardContent().GetText();
+
+                File.WriteAllText(path, txt);
+                grid.MultiSelect = false;
+            }
+            catch (Exception)
+            {
+                return;
+            }
         }
     }
 }
