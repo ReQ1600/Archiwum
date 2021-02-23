@@ -1,15 +1,11 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
 using System.Data;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Archiwum
@@ -246,8 +242,6 @@ namespace Archiwum
                         lblStatus.Text = "Odświeżono";
                         break;
                     default:
-                        MessageBox.Show("Czujesz to?..Tak to program się skopcił", "Zgon", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        lblStatus.Text = ";)";
                         break;
                 }
             }
@@ -329,7 +323,7 @@ namespace Archiwum
                                 xcel.Range[$"B{x - 5}", $"C{x - 4}"].Cells.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
 
 
-                                //podpis jest jako range bo oryginalnie miał byćna 2 komórkach ale był za duży i nie chce mi się zmieniać
+                                //podpis jest jako range bo oryginalnie miał być na 2 komórkach ale był za duży i nie chce mi się zmieniać
                                 xcel.Range[$"A{x - 6}", $"A{x - 6}"].Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeTop].Weight = Microsoft.Office.Interop.Excel.XlBorderWeight.xlThin;
                                 xcel.Range[$"A{x - 6}", $"A{x - 6}"].Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeTop].LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlDot;
 
@@ -391,7 +385,6 @@ namespace Archiwum
                         }
                         for (int i = 1; i < grid.Rows.Count + 1; i++)
                         {
-                            xcel.Range[$"A{i}", $"A{i}"].BorderAround2(Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous, Microsoft.Office.Interop.Excel.XlBorderWeight.xlThin);
                             xcel.Range[$"B{i}", $"B{i}"].BorderAround2(Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous, Microsoft.Office.Interop.Excel.XlBorderWeight.xlThin);
                             xcel.Range[$"C{i}", $"C{i}"].BorderAround2(Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous, Microsoft.Office.Interop.Excel.XlBorderWeight.xlThin);
                             xcel.Range[$"D{i}", $"D{i}"].BorderAround2(Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous, Microsoft.Office.Interop.Excel.XlBorderWeight.xlThin);
@@ -462,7 +455,7 @@ namespace Archiwum
                 grid.SelectAll();
                 string txt = grid.GetClipboardContent().GetText();
 
-                File.WriteAllText(path, txt);
+                File.WriteAllText(path, txt, Encoding.Unicode);
                 grid.MultiSelect = false;
             }
             catch (Exception)
@@ -470,5 +463,7 @@ namespace Archiwum
                 return;
             }
         }
+
+
     }
 }

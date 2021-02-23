@@ -27,6 +27,7 @@ namespace Archiwum
             if (tbTitle.Text.Trim().Equals("")) { MessageBox.Show("Wymagane pola są puste", "Uwaga", MessageBoxButtons.OK, MessageBoxIcon.Exclamation); return; };
 
             string sql;
+            bool exceCatch = false;
             try
             {
                 sql = @"Update archiwum.archiwum SET
@@ -93,8 +94,14 @@ namespace Archiwum
             }
             catch (Exception exc)
             {
-                MessageBox.Show(exc.Message);
-                GlobalData.Stat = "Edycja nieudana";
+                MessageBox.Show("Niewłaściwa wartość w którymś z pól." + "\r(" + exc.Message + ")", "Błąd dodawania", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                GlobalData.Stat = "Dodawanie nie powiodło się/zostało anulowane";
+                exceCatch = true;
+            }
+            if (exceCatch == false)
+            {
+                GlobalData.Stat = "Dodawanie przebiegło pomyślnie";
+                DialogResult = DialogResult.OK;
                 Close();
             }
 
@@ -131,7 +138,6 @@ namespace Archiwum
             else
             {
                 tbU.Enabled = false;
-                tbU.Text = null;
             }
         }
     }

@@ -91,7 +91,7 @@ namespace Archiwum
             }
             catch (Exception exc)
             {
-                MessageBox.Show("Niewłaściwa wartość w którymśz pól."+"\r("+exc.Message+")", "Błąd dodawania", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Niewłaściwa wartość w którymś z pól."+"\r("+exc.Message+")", "Błąd dodawania", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 GlobalData.Stat = "Dodawanie nie powiodło się/zostało anulowane";
                 exceCatch = true;
             }

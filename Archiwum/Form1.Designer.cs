@@ -112,6 +112,7 @@
             this.grid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.grid.ContextMenuStrip = this.Menu;
+            this.grid.Cursor = System.Windows.Forms.Cursors.Default;
             this.grid.Location = new System.Drawing.Point(0, 24);
             this.grid.MultiSelect = false;
             this.grid.Name = "grid";

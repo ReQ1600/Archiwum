@@ -34,6 +34,48 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DevExpress.Data.v18.2, Version=18.2.5.0, Culture=neutral, PublicKeyToken=1b6562238b11e6dd, processorArchitecture=MSIL">
+      <HintPath>..\packages\YshXaf.DevExpress.Data_yesfree.18.2.5\lib\net40\DevExpress.Data.v18.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Images.v18.2, Version=18.2.5.0, Culture=neutral, PublicKeyToken=1b6562238b11e6dd, processorArchitecture=MSIL">
+      <HintPath>..\packages\YshXaf.DevExpress.Images_yesfree.18.2.5\lib\net40\DevExpress.Images.v18.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Office.v18.2.Core, Version=18.2.5.0, Culture=neutral, PublicKeyToken=1b6562238b11e6dd, processorArchitecture=MSIL">
+      <HintPath>..\packages\YshXaf.DevExpress.Office.Core_yesfree.18.2.5\lib\net40\DevExpress.Office.v18.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Pdf.v18.2.Core, Version=18.2.5.0, Culture=neutral, PublicKeyToken=1b6562238b11e6dd, processorArchitecture=MSIL">
+      <HintPath>..\packages\YshXaf.DevExpress.Pdf.Core_yesfree.18.2.5\lib\net40\DevExpress.Pdf.v18.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Printing.v18.2.Core, Version=18.2.5.0, Culture=neutral, PublicKeyToken=1b6562238b11e6dd, processorArchitecture=MSIL">
+      <HintPath>..\packages\YshXaf.DevExpress.Printing.Core_yesfree.18.2.5\lib\net40\DevExpress.Printing.v18.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.RichEdit.v18.2.Core, Version=18.2.5.0, Culture=neutral, PublicKeyToken=1b6562238b11e6dd, processorArchitecture=MSIL">
+      <HintPath>..\packages\YshXaf.DevExpress.RichEdit.Core_yesfree.18.2.5\lib\net40\DevExpress.RichEdit.v18.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Sparkline.v18.2.Core, Version=18.2.5.0, Culture=neutral, PublicKeyToken=1b6562238b11e6dd, processorArchitecture=MSIL">
+      <HintPath>..\packages\YshXaf.DevExpress.Sparkline.Core_yesfree.18.2.5\lib\net40\DevExpress.Sparkline.v18.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Utils.v18.2, Version=18.2.5.0, Culture=neutral, PublicKeyToken=1b6562238b11e6dd, processorArchitecture=MSIL">
+      <HintPath>..\packages\YshXaf.DevExpress.Utils_yesfree.18.2.5\lib\net40\DevExpress.Utils.v18.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraBars.v18.2, Version=18.2.5.0, Culture=neutral, PublicKeyToken=1b6562238b11e6dd, processorArchitecture=MSIL">
+      <HintPath>..\packages\YshXaf.DevExpress.XtraBars_yesfree.18.2.5\lib\net40\DevExpress.XtraBars.v18.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraEditors.v18.2, Version=18.2.5.0, Culture=neutral, PublicKeyToken=1b6562238b11e6dd, processorArchitecture=MSIL">
+      <HintPath>..\packages\YshXaf.DevExpress.XtraEditors_yesfree.18.2.5\lib\net40\DevExpress.XtraEditors.v18.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraGrid.v18.2, Version=18.2.5.0, Culture=neutral, PublicKeyToken=1b6562238b11e6dd, processorArchitecture=MSIL">
+      <HintPath>..\packages\YshXaf.DevExpress.XtraGrid_yesfree.18.2.5\lib\net40\DevExpress.XtraGrid.v18.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraLayout.v18.2, Version=18.2.5.0, Culture=neutral, PublicKeyToken=1b6562238b11e6dd, processorArchitecture=MSIL">
+      <HintPath>..\packages\YshXaf.DevExpress.XtraLayout_yesfree.18.2.5\lib\net40\DevExpress.XtraLayout.v18.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraPrinting.v18.2, Version=18.2.5.0, Culture=neutral, PublicKeyToken=1b6562238b11e6dd, processorArchitecture=MSIL">
+      <HintPath>..\packages\YshXaf.DevExpress.XtraPrinting_yesfree.18.2.5\lib\net40\DevExpress.XtraPrinting.v18.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraTreeList.v18.2, Version=18.2.5.0, Culture=neutral, PublicKeyToken=1b6562238b11e6dd, processorArchitecture=MSIL">
+      <HintPath>..\packages\YshXaf.DevExpress.XtraTreeList_yesfree.18.2.5\lib\net40\DevExpress.XtraTreeList.v18.2.dll</HintPath>
+    </Reference>
     <Reference Include="DocumentFormat.OpenXml, Version=2.7.2.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
       <HintPath>..\packages\DocumentFormat.OpenXml.2.7.2\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
     </Reference>
